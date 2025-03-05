@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>driveBox - Dashboard</title>
+  </head>
+  <body>
+    <%- include("../partials/header.ejs") %>
+
+    <main>
+      <aside>
+        <section>
+          <div>
+            <button type="button" class="btn open-modal">New Folder</button>
+            <dialog>
+              <form>
+                <h3>New Folder</h3>
+                <label for="new-folder">Folder Name</label>
+                <input type="text" name="newFolder" id="new-folder" />
+                <button type="submit">Create Folder</button>
+                <button type="button" class="btn close-modal">Cancel</button>
+              </form>
+            </dialog>
+          </div>
+
+          <div>
+            <button type="button" class="btn open-modal">New File</button>
+            <dialog>
+              <form>
+                <h3>New File</h3>
+                <input type="file" name="newFile" id="new-file" />
+                <button type="submit">Upload File</button>
+                <button type="button" class="btn close-modal">Cancel</button>
+              </form>
+            </dialog>
+          </div>
+        </section>
+
+        <section>
+          <form action="/auth/sign-out" method="POST">
+            <button type="submit">Sign Out</button>
+          </form>
+        </section>
+      </aside>
+
+      <div class="main-content">
+        <section>
+          <h2>My Folders</h2>
+        </section>
+
+        <section>
+          <h2>My Files</h2>
+        </section>
+      </div>
+    </main>
+
+    <script>
+      document.querySelectorAll(".btn.open-modal").forEach((button) => {
+        button.addEventListener("click", () => {
+          button.closest("div").querySelector("dialog").showModal();
+        });
+      });
+
+      document.querySelectorAll(".btn.close-modal").forEach((button) => {
+        button.addEventListener("click", () => {
+          button.closest("dialog").close();
+        });
+      });
+    </script>
+  </body>
+</html>

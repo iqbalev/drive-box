@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>driveBox - Sign Up</title>
+  </head>
+  <body>
+    <%- include("../partials/header.ejs") %>
+
+    <main>
+      <h2>Create New Account</h2>
+
+      <form action="/auth/sign-up" method="POST">
+        <div>
+          <label for="username">Username</label>
+          <input
+            type="text"
+            name="username"
+            id="username"
+            placeholder="Enter username"
+          />
+        </div>
+
+        <div>
+          <label for="email">Email</label>
+          <input
+            type="email"
+            name="email"
+            id="email"
+            placeholder="Enter email"
+          />
+        </div>
+
+        <div>
+          <label for="password">Password</label>
+          <input
+            type="password"
+            name="password"
+            id="password"
+            placeholder="Enter password"
+          />
+        </div>
+
+        <div>
+          <label for="confirmPassword">Confirm Password</label>
+          <input
+            type="password"
+            name="confirmPassword"
+            id="confirmPassword"
+            placeholder="Enter password confirmation"
+          />
+        </div>
+
+        <button type="submit">Sign Up</button>
+      </form>
+
+      <span>Already have an account? <a href="/auth/sign-in">Sign In</a></span>
+    </main>
+  </body>
+</html>
