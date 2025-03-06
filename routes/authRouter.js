@@ -4,7 +4,7 @@ import bcryptjs from "bcryptjs";
 import passport from "../config/passportConfig.js";
 import validateSignUp from "../middlewares/validateSignUp.js";
 import validateSignIn from "../middlewares/validateSignIn.js";
-import handleValidationError from "../middlewares/handleValidationError.js";
+import validationErrorHandler from "../middlewares/validationErrorHandler.js";
 
 const authRouter = Router();
 
@@ -16,7 +16,7 @@ authRouter.get("/sign-up", (req, res) =>
 authRouter.post(
   "/sign-up",
   validateSignUp,
-  handleValidationError,
+  validationErrorHandler,
   async (req, res, next) => {
     try {
       const { username, email, password } = req.body;
@@ -44,7 +44,7 @@ authRouter.get("/sign-in", (req, res) =>
 authRouter.post(
   "/sign-in",
   validateSignIn,
-  handleValidationError,
+  validationErrorHandler,
   async (req, res, next) => {
     passport.authenticate("local", (err, user, info) => {
       if (err) return next(err);

@@ -6,6 +6,8 @@ import passport from "./config/passportConfig.js";
 import flash from "express-flash";
 import dashboardRouter from "./routes/dashboardRouter.js";
 import authRouter from "./routes/authRouter.js";
+import pageNotFoundHandler from "./middlewares/pageNotFoundHandler.js";
+import globalErrorHandler from "./middlewares/globalErrorHandler.js";
 import "dotenv/config";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -25,6 +27,9 @@ app.use(flash());
 app.get("/", (req, res) => res.redirect("/auth/sign-in"));
 app.use("/auth", authRouter);
 app.use("/dashboard", dashboardRouter);
+
+app.use(pageNotFoundHandler);
+app.use(globalErrorHandler);
 
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () =>

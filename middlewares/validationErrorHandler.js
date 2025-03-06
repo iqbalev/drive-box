@@ -1,6 +1,6 @@
 import { validationResult } from "express-validator";
 
-function handleValidationError(req, res, next) {
+function validationErrorHandler(req, res, next) {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     req.flash("errors", errors.array());
@@ -10,4 +10,4 @@ function handleValidationError(req, res, next) {
   next();
 }
 
-export default handleValidationError;
+export default validationErrorHandler;
