@@ -3,6 +3,7 @@ import path from "node:path";
 import express from "express";
 import sessionConfig from "./config/sessionConfig.js";
 import passport from "./config/passportConfig.js";
+import flash from "express-flash";
 import dashboardRouter from "./routes/dashboardRouter.js";
 import authRouter from "./routes/authRouter.js";
 import "dotenv/config";
@@ -19,10 +20,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(sessionConfig);
 app.use(passport.session());
+app.use(flash());
 
 app.get("/", (req, res) => res.redirect("/auth/sign-in"));
-app.use("/dashboard", dashboardRouter);
 app.use("/auth", authRouter);
+app.use("/dashboard", dashboardRouter);
 
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () =>
