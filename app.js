@@ -4,8 +4,9 @@ import express from "express";
 import sessionConfig from "./config/sessionConfig.js";
 import passport from "./config/passportConfig.js";
 import flash from "express-flash";
-import dashboardRouter from "./routes/dashboardRouter.js";
 import authRouter from "./routes/authRouter.js";
+import dashboardRouter from "./routes/dashboardRouter.js";
+import checkAuthenticated from "./middlewares/checkAuthenticated.js";
 import pageNotFoundHandler from "./middlewares/pageNotFoundHandler.js";
 import globalErrorHandler from "./middlewares/globalErrorHandler.js";
 import "dotenv/config";
@@ -26,7 +27,7 @@ app.use(flash());
 
 app.get("/", (req, res) => res.redirect("/auth/sign-in"));
 app.use("/auth", authRouter);
-app.use("/dashboard", dashboardRouter);
+app.use("/dashboard", checkAuthenticated, dashboardRouter);
 
 app.use(pageNotFoundHandler);
 app.use(globalErrorHandler);
