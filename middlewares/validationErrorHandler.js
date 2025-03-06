@@ -4,7 +4,7 @@ function validationErrorHandler(req, res, next) {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     req.flash("errors", errors.array());
-    return res.redirect("back");
+    return res.redirect(req.get("referrer"));
   }
 
   next();

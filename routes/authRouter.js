@@ -51,7 +51,7 @@ authRouter.post(
 
       if (!user) {
         req.flash("errors", [{ msg: info.message }]);
-        return res.redirect("back");
+        return res.redirect(req.get("referrer"));
       }
 
       req.logIn(user, (err) => {
