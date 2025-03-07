@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>driveBox - Dashboard | <%= currentFolder.name %></title>
+  </head>
+  <body>
+    <%- include("../partials/header.ejs") %>
+
+    <main>
+      <aside>
+        <section>
+          <div>
+            <button type="button" class="btn open-modal">New File</button>
+            <dialog>
+              <form>
+                <h3>New File</h3>
+                <input type="file" name="newFile" id="new-file" />
+                <button type="submit">Upload File</button>
+                <button type="button" class="btn close-modal">Cancel</button>
+              </form>
+            </dialog>
+          </div>
+        </section>
+
+        <section>
+          <form action="/auth/sign-out" method="POST">
+            <button type="submit">Sign Out</button>
+          </form>
+        </section>
+      </aside>
+
+      <div class="main-content">
+        <h2><%= currentFolder.name %></h2>
+        <section>
+          <h2>My Files</h2>
+        </section>
+      </div>
+    </main>
+
+    <script>
+      document
+        .querySelector(".btn.open-modal")
+        .addEventListener("click", () => {
+          document.querySelector("dialog").showModal();
+        });
+
+      document
+        .querySelector(".btn.close-modal")
+        .addEventListener("click", () => {
+          document.querySelector("dialog").close();
+        });
+    </script>
+  </body>
+</html>

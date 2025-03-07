@@ -14,10 +14,15 @@
           <div>
             <button type="button" class="btn open-modal">New Folder</button>
             <dialog>
-              <form>
+              <form action="/dashboard/create-folder" method="POST">
                 <h3>New Folder</h3>
                 <label for="new-folder">Folder Name</label>
-                <input type="text" name="newFolder" id="new-folder" />
+                <input
+                  type="text"
+                  name="newFolder"
+                  id="new-folder"
+                  placeholder="Meme Collections"
+                />
                 <button type="submit">Create Folder</button>
                 <button type="button" class="btn close-modal">Cancel</button>
               </form>
@@ -47,6 +52,52 @@
       <div class="main-content">
         <section>
           <h2>My Folders</h2>
+          <% if (folders.length > 0) { %>
+          <div>
+            <ul>
+              <% folders.forEach(({id, name}) => { %>
+              <li>
+                <a href="/dashboard/folder/<%= id %>"><%= name %></a>
+
+                <div>
+                  <form
+                    action="/dashboard/delete-folder/<%= id %>?_method=DELETE"
+                    method="POST"
+                  >
+                    <button type="submit">Delete</button>
+                  </form>
+
+                  <div>
+                    <button type="button" class="btn open-modal">Rename</button>
+                    <dialog>
+                      <form
+                        action="/dashboard/rename-folder/<%= id %>?_method=PUT"
+                        method="POST"
+                      >
+                        <h3><%= name %></h3>
+                        <label for="rename-folder">Folder Name</label>
+                        <input
+                          type="text"
+                          name="renameFolder"
+                          id="rename-folder"
+                          placeholder="Meme Collections"
+                        />
+                        <button type="submit">Rename Folder</button>
+                        <button type="button" class="btn close-modal">
+                          Cancel
+                        </button>
+                      </form>
+                    </dialog>
+                  </div>
+                </div>
+              </li>
+              <% }) %>
+            </ul>
+          </div>
+
+          <% } else { %>
+          <div><span>You don't have any folder yet.</span></div>
+          <% } %>
         </section>
 
         <section>

@@ -1,6 +1,7 @@
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 import express from "express";
+import methodOverride from "method-override";
 import sessionConfig from "./config/sessionConfig.js";
 import passport from "./config/passportConfig.js";
 import flash from "express-flash";
@@ -21,9 +22,14 @@ app.set("view engine", "ejs");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(methodOverride("_method"));
 app.use(sessionConfig);
 app.use(passport.session());
 app.use(flash());
+app.use((req, res, next) => {
+  res.locals.user = req.user;
+  next();
+});
 
 app.get("/", (req, res) => res.redirect("/auth/sign-in"));
 app.use("/auth", authRouter);
