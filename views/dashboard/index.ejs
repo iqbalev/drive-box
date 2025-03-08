@@ -4,27 +4,43 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>driveBox - Dashboard</title>
+    <link rel="stylesheet" href="/styles/global.css" />
   </head>
   <body>
     <%- include("../partials/header.ejs") %>
 
-    <main>
-      <aside>
-        <section>
+    <main class="dashboard-content">
+      <aside class="dashboard-sidebar">
+        <section class="dashboard-info">
+          <h2>Dashboard</h2>
+          <span>Hi, <%= user.username %>!</span>
+        </section>
+
+        <section class="dashboard-actions top">
           <div>
             <button type="button" class="btn open-modal">New Folder</button>
             <dialog>
-              <form action="/dashboard/create-folder" method="POST">
-                <h3>New Folder</h3>
-                <label for="new-folder">Folder Name</label>
-                <input
-                  type="text"
-                  name="newFolder"
-                  id="new-folder"
-                  placeholder="Meme Collections"
-                />
-                <button type="submit">Create Folder</button>
-                <button type="button" class="btn close-modal">Cancel</button>
+              <form
+                action="/dashboard/create-folder"
+                method="POST"
+                class="new-folder-form"
+              >
+                <h4>New Folder</h4>
+
+                <div class="form-group">
+                  <label for="new-folder">Folder Name</label>
+                  <input
+                    type="text"
+                    name="newFolder"
+                    id="new-folder"
+                    placeholder="Meme Collections"
+                  />
+                </div>
+
+                <div class="form-group">
+                  <button type="submit">Create Folder</button>
+                  <button type="button" class="btn close-modal">Cancel</button>
+                </div>
               </form>
             </dialog>
           </div>
@@ -32,34 +48,49 @@
           <div>
             <button type="button" class="btn open-modal">New File</button>
             <dialog>
-              <form>
-                <h3>New File</h3>
+              <form class="new-file-form">
+                <h4>New File</h4>
+
                 <input type="file" name="newFile" id="new-file" />
-                <button type="submit">Upload File</button>
-                <button type="button" class="btn close-modal">Cancel</button>
+
+                <div class="form-group">
+                  <button type="submit">Upload File</button>
+                  <button type="button" class="btn close-modal">Cancel</button>
+                </div>
               </form>
             </dialog>
           </div>
         </section>
 
-        <section>
+        <section class="dashboard-actions bottom">
           <form action="/auth/sign-out" method="POST">
             <button type="submit">Sign Out</button>
           </form>
         </section>
       </aside>
 
-      <div class="main-content">
-        <section>
-          <h2>My Folders</h2>
+      <div class="dashboard-main">
+        <section class="my-folders">
+          <h3>My Folders</h3>
+
           <% if (folders.length > 0) { %>
-          <div>
-            <ul>
-              <% folders.forEach(({id, name}) => { %>
+          <div class="folder-table">
+            <div class="folder-header">
+              <span>Name</span>
+              <span>Date Added</span>
+              <span>Last Edited</span>
+              <span>Actions</span>
+            </div>
+
+            <ul class="folder-body">
+              <% folders.forEach(({id, name, createdAt, editedAt}) => { %>
               <li>
                 <a href="/dashboard/folder/<%= id %>"><%= name %></a>
 
-                <div>
+                <span><%= createdAt.toLocaleString("en-GB") %></span>
+                <span><%= editedAt.toLocaleString("en-GB") %></span>
+
+                <div class="body-actions">
                   <form
                     action="/dashboard/delete-folder/<%= id %>?_method=DELETE"
                     method="POST"
@@ -73,19 +104,26 @@
                       <form
                         action="/dashboard/rename-folder/<%= id %>?_method=PUT"
                         method="POST"
+                        class="rename-folder-form"
                       >
                         <h3><%= name %></h3>
-                        <label for="rename-folder">Folder Name</label>
-                        <input
-                          type="text"
-                          name="renameFolder"
-                          id="rename-folder"
-                          placeholder="Meme Collections"
-                        />
-                        <button type="submit">Rename Folder</button>
-                        <button type="button" class="btn close-modal">
-                          Cancel
-                        </button>
+
+                        <div class="form-group">
+                          <label for="rename-folder">Folder Name</label>
+                          <input
+                            type="text"
+                            name="renameFolder"
+                            id="rename-folder"
+                            placeholder="Meme Collections"
+                          />
+                        </div>
+
+                        <div class="form-group">
+                          <button type="submit">Rename Folder</button>
+                          <button type="button" class="btn close-modal">
+                            Cancel
+                          </button>
+                        </div>
                       </form>
                     </dialog>
                   </div>
@@ -100,8 +138,8 @@
           <% } %>
         </section>
 
-        <section>
-          <h2>My Files</h2>
+        <section class="my-files">
+          <h3>My Files</h3>
         </section>
       </div>
     </main>

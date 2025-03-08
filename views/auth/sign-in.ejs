@@ -4,14 +4,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>driveBox - Sign In</title>
+    <link rel="stylesheet" href="/styles/global.css" />
   </head>
   <body>
     <%- include("../partials/header.ejs") %>
 
-    <main>
+    <main class="auth-content">
       <h2>Continue with Your Account</h2>
 
-      <form action="/auth/sign-in" method="POST">
+      <form action="/auth/sign-in" method="POST" class="auth-form">
         <% if (errors.length > 0) { %>
         <ul>
           <% errors.forEach((error) => { %>
@@ -20,7 +21,7 @@
         </ul>
         <% } %>
 
-        <div>
+        <div class="form-group">
           <label for="identifier">Username or Email</label>
           <input
             type="text"
@@ -30,7 +31,7 @@
           />
         </div>
 
-        <div>
+        <div class="form-group">
           <label for="password">Password</label>
           <input
             type="password"

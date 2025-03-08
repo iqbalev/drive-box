@@ -1,0 +1,227 @@
+/* Import */
+@import url("https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&display=swap");
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Global */
+body {
+  display: flex;
+  flex-direction: column;
+  font-family: "Comfortaa", monospace;
+  min-height: 100dvh;
+}
+
+button,
+input {
+  font-family: inherit;
+  padding: 10px 20px;
+  border-radius: 4px;
+}
+
+button {
+  border: none;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+input {
+  border: 1px solid rgb(128, 128, 128);
+}
+
+a {
+  text-decoration: none;
+  color: initial;
+}
+
+dialog[open] {
+  position: fixed;
+  inset: 50% auto auto 50%;
+  transform: translate(-50%, -50%);
+  border: 1px solid;
+  padding: 20px;
+}
+
+/* Header */
+header {
+  display: flex;
+  justify-content: center;
+  border-bottom: 1px solid;
+}
+
+/* Auth */
+.auth-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100dvh;
+  gap: 20px;
+}
+
+.auth-content span a {
+  font-weight: 600;
+}
+
+.auth-content span a:hover {
+  text-decoration: underline;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  max-width: 400px;
+  width: 100%;
+  gap: 10px;
+}
+
+.auth-form ul {
+  display: flex;
+  flex-direction: column;
+}
+
+.auth-form li {
+  list-style: inside;
+}
+
+.auth-form .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Dashboard & Folder */
+.dashboard-content,
+.folder-content {
+  display: flex;
+}
+
+.dashboard-sidebar,
+.folder-sidebar {
+  display: flex;
+  flex-direction: column;
+  flex: 2;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+  height: 100dvh;
+  border-right: 1px solid;
+}
+
+.dashboard-info,
+.folder-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.dashboard-actions,
+.folder-actions {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.new-folder-form,
+.new-file-form,
+.rename-folder-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.new-folder-form .form-group,
+.new-file-form .form-group,
+.rename-folder-form .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.dashboard-main,
+.folder-main {
+  display: flex;
+  flex-direction: column;
+  flex: 8;
+  gap: 20px;
+}
+
+/* Dashboard */
+.dashboard-actions.top {
+  gap: 4px;
+}
+
+.my-folders {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.folder-table {
+  display: flex;
+  flex-direction: column;
+}
+
+.folder-header {
+  display: flex;
+}
+
+.folder-header span {
+  flex: 1;
+}
+
+.folder-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.folder-body li {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  border-top: 1px solid;
+  border-bottom: 1px solid;
+  margin-bottom: -1px;
+}
+
+.folder-body li:last-child {
+  margin-bottom: initial;
+}
+
+.folder-body li:hover {
+  background-color: #e9e9ed;
+}
+
+.folder-body a,
+.folder-body span,
+.folder-body .body-actions {
+  flex: 1;
+}
+
+.body-actions {
+  display: flex;
+  gap: 4px;
+}
+
+/* Folder */
+.folder-main ol {
+  display: flex;
+}
+
+.folder-main li {
+  list-style: none;
+}
+
+.folder-main a:first-child:hover {
+  text-decoration: underline;
+}
+
+.folder-main span {
+  padding: 0 4px;
+}
