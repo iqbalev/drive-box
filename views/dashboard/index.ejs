@@ -48,11 +48,14 @@
           <div>
             <button type="button" class="btn open-modal">New File</button>
             <dialog>
-              <form class="new-file-form">
+              <form
+                action="/dashboard/upload-file"
+                method="POST"
+                enctype="multipart/form-data"
+                class="new-file-form"
+              >
                 <h4>New File</h4>
-
                 <input type="file" name="newFile" id="new-file" />
-
                 <div class="form-group">
                   <button type="submit">Upload File</button>
                   <button type="button" class="btn close-modal">Cancel</button>
@@ -86,10 +89,8 @@
               <% folders.forEach(({id, name, createdAt, editedAt}) => { %>
               <li>
                 <a href="/dashboard/folder/<%= id %>"><%= name %></a>
-
                 <span><%= createdAt.toLocaleString("en-GB") %></span>
                 <span><%= editedAt.toLocaleString("en-GB") %></span>
-
                 <div class="body-actions">
                   <form
                     action="/dashboard/delete-folder/<%= id %>?_method=DELETE"
@@ -140,6 +141,40 @@
 
         <section class="my-files">
           <h3>My Files</h3>
+
+          <% if (files.length > 0) { %>
+          <div class="file-table">
+            <div class="file-header">
+              <span>Name</span>
+              <span>Size</span>
+              <span>Date Added</span>
+              <span>Actions</span>
+            </div>
+
+            <ul class="file-body">
+              <% files.forEach(({id, name, uploadedAt, size, url}) => { %>
+              <li>
+                <span title="<%= name %>"><%= name %></span>
+                <span><%= size %></span>
+                <span><%= uploadedAt.toLocaleString("en-GB") %></span>
+                <div class="body-actions">
+                  <form
+                    action="/dashboard/delete-file/<%= id %>?_method=DELETE"
+                    method="POST"
+                  >
+                    <button type="submit">Delete</button>
+                  </form>
+
+                  <a href="<%= url %>" download="<%= name %>">Download</a>
+                </div>
+              </li>
+              <% }) %>
+            </ul>
+          </div>
+
+          <% } else { %>
+          <div><span>You don't have any file yet.</span></div>
+          <% } %>
         </section>
       </div>
     </main>

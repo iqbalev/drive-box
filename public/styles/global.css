@@ -1,5 +1,11 @@
 /* Import */
 @import url("https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap");
 
 * {
   box-sizing: border-box;
@@ -11,7 +17,8 @@
 body {
   display: flex;
   flex-direction: column;
-  font-family: "Comfortaa", monospace;
+  font-family: "DM Sans", "Source Sans 3", "Montserrat", "Inter", "Comfortaa",
+    "Raleway", "IBM Plex Mono", monospace;
   min-height: 100dvh;
 }
 
@@ -19,7 +26,7 @@ button,
 input {
   font-family: inherit;
   padding: 10px 20px;
-  border-radius: 4px;
+  border-radius: 8px;
 }
 
 button {
@@ -44,6 +51,7 @@ dialog[open] {
   inset: 50% auto auto 50%;
   transform: translate(-50%, -50%);
   border: 1px solid;
+  border-radius: 8px;
   padding: 20px;
 }
 
@@ -128,6 +136,10 @@ header {
   align-items: center;
 }
 
+.dashboard-actions.top {
+  gap: 4px;
+}
+
 .new-folder-form,
 .new-file-form,
 .rename-folder-form {
@@ -152,66 +164,105 @@ header {
   gap: 20px;
 }
 
-/* Dashboard */
-.dashboard-actions.top {
-  gap: 4px;
-}
-
-.my-folders {
+.my-folders,
+.my-files {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
-.folder-table {
+.folder-table,
+.file-table {
   display: flex;
   flex-direction: column;
 }
 
-.folder-header {
+.folder-header,
+.file-header {
   display: flex;
 }
 
-.folder-header span {
+.folder-header span:first-child,
+.file-header span:first-child {
+  flex: 2;
+}
+
+.folder-header span:not(:first-child),
+.file-header span:not(:first-child) {
   flex: 1;
 }
 
-.folder-body {
+.folder-body,
+.file-body {
   display: flex;
   flex-direction: column;
 }
 
-.folder-body li {
+.folder-body li,
+.file-body li {
   display: flex;
   align-items: center;
   list-style: none;
   border-top: 1px solid;
   border-bottom: 1px solid;
   margin-bottom: -1px;
+  flex-wrap: wrap;
+  gap: 4px;
 }
 
-.folder-body li:last-child {
+.folder-body li:last-child,
+.file-body li:last-child {
   margin-bottom: initial;
 }
 
-.folder-body li:hover {
+.folder-body li:hover,
+.file-body li:hover {
   background-color: #e9e9ed;
 }
 
 .folder-body a,
+.file-body span:first-child {
+  flex: 2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .folder-body span,
-.folder-body .body-actions {
+.folder-body .body-actions,
+.file-body span:not(:first-child),
+.file-body .body-actions {
   flex: 1;
 }
 
 .body-actions {
   display: flex;
   gap: 4px;
+  align-items: center;
+}
+
+.body-actions a {
+  background-color: #e9e9ed;
+  border-radius: 8px;
+}
+
+.body-actions > form > button,
+.body-actions > div > button {
+  padding: 0;
+  font-size: 1rem;
+}
+
+.body-actions a {
+  font-size: 1rem;
 }
 
 /* Folder */
 .folder-main ol {
   display: flex;
+}
+
+.folder-main ol li span {
+  padding: 0 4px;
 }
 
 .folder-main li {
@@ -220,8 +271,4 @@ header {
 
 .folder-main a:first-child:hover {
   text-decoration: underline;
-}
-
-.folder-main span {
-  padding: 0 4px;
 }
