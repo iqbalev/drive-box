@@ -131,6 +131,17 @@ dashboardRouter.delete("/delete-file/:fileId", async (req, res, next) => {
 
 dashboardRouter.delete("/delete-folder/:folderId", async (req, res, next) => {
   try {
+    const files = await prisma.file.findMany({
+      where: {
+        folderId: req.params.folderId,
+        ownerId: res.locals.user.id,
+      },
+    });
+
+    const { data, error } = await supabase.storage
+      .from(process.env.SUPABASE_BUCKET_NAME)
+      .remove(files.map((file) => file.name));
+
     await prisma.folder.delete({
       where: {
         id: req.params.folderId,
