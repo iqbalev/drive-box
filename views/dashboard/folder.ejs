@@ -81,7 +81,12 @@
                     <button type="submit">Delete</button>
                   </form>
 
-                  <a href="<%= url %>" download="<%= name %>">Download</a>
+                  <form
+                    action="/dashboard/folder/<%= folder.id %>/download-file/<%= id %>"
+                    method="POST"
+                  >
+                    <button type="submit">Download</button>
+                  </form>
                 </div>
               </li>
               <% }) %>
@@ -89,7 +94,7 @@
           </div>
 
           <% } else { %>
-          <div><span>You don't have any file yet.</span></div>
+          <div><span>No files available yet.</span></div>
           <% } %>
         </section>
       </div>

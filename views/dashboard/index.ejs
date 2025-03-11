@@ -75,8 +75,8 @@
       <div class="dashboard-main">
         <section class="my-folders">
           <h3>
-            <% if (folders.length > 0) { %> My Folders (<%= folderCount %>) <% }
-            else { %> My Folders <% } %>
+            <% if (folders.length > 0) { %> Folders (<%= folderCount %>) <% }
+            else { %> Folders <% } %>
           </h3>
 
           <% if (folders.length > 0) { %>
@@ -138,14 +138,14 @@
           </div>
 
           <% } else { %>
-          <div><span>You don't have any folder yet.</span></div>
+          <div><span>No folders available yet.</span></div>
           <% } %>
         </section>
 
         <section class="my-files">
           <h3>
-            <% if (files.length > 0) { %> My Files (<%= fileCount %>) <% } else
-            { %> My Files <% } %>
+            <% if (files.length > 0) { %> Files (<%= fileCount %>) <% } else {
+            %> Files <% } %>
           </h3>
 
           <% if (files.length > 0) { %>
@@ -171,7 +171,12 @@
                     <button type="submit">Delete</button>
                   </form>
 
-                  <a href="<%= url %>" download="<%= name %>">Download</a>
+                  <form
+                    action="/dashboard/download-file/<%= id %>"
+                    method="POST"
+                  >
+                    <button type="submit">Download</button>
+                  </form>
                 </div>
               </li>
               <% }) %>
@@ -179,7 +184,7 @@
           </div>
 
           <% } else { %>
-          <div><span>You don't have any file yet.</span></div>
+          <div><span>No files available yet.</span></div>
           <% } %>
         </section>
       </div>

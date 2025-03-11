@@ -11,8 +11,6 @@ const dashboardRouter = Router();
 // /dashboard Route
 dashboardRouter.get("/", async (req, res, next) => {
   try {
-    await prisma.file.count;
-
     const folderCount = await prisma.folder.count({
       where: {
         ownerId: res.locals.user.id,
@@ -66,15 +64,12 @@ dashboardRouter.post(
           contentType: mimetype,
         });
 
-      const { data: publicUrlData } = await supabase.storage
-        .from(process.env.SUPABASE_BUCKET_NAME)
-        .getPublicUrl(filePath);
-
       await prisma.file.create({
         data: {
           name: filePath,
+          mimetype: mimetype,
           size: parseInt(size),
-          url: publicUrlData.publicUrl,
+          url: filePath,
           ownerId: res.locals.user.id,
         },
       });
@@ -85,6 +80,31 @@ dashboardRouter.post(
     }
   }
 );
+
+dashboardRouter.post("/download-file/:fileId", async (req, res, next) => {
+  try {
+    const file = await prisma.file.findUnique({
+      where: {
+        id: req.params.fileId,
+        ownerId: res.locals.user.id,
+      },
+    });
+
+    const { data, error } = await supabase.storage
+      .from(process.env.SUPABASE_BUCKET_NAME)
+      .download(file.url);
+
+    const arrayBuffer = await data.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+
+    res.setHeader("Content-Type", file.mimetype);
+    res.setHeader("Content-Disposition", `attachment; filename="${file.name}"`);
+
+    res.send(buffer);
+  } catch (error) {
+    return next(error);
+  }
+});
 
 dashboardRouter.post("/create-folder", async (req, res, next) => {
   try {
@@ -221,21 +241,50 @@ dashboardRouter.post(
         .from(process.env.SUPABASE_BUCKET_NAME)
         .upload(filePath, buffer, { contentType: mimetype });
 
-      const { data: publicUrlData } = await supabase.storage
-        .from(process.env.SUPABASE_BUCKET_NAME)
-        .getPublicUrl(filePath);
-
       await prisma.file.create({
         data: {
           name: filePath,
+          mimetype: mimetype,
           size: parseInt(size),
-          url: publicUrlData.publicUrl,
+          url: filePath,
           folderId: req.params.folderId,
           ownerId: res.locals.user.id,
         },
       });
 
       return res.redirect(`/dashboard/folder/${req.params.folderId}`);
+    } catch (error) {
+      return next(error);
+    }
+  }
+);
+
+dashboardRouter.post(
+  "/folder/:folderId/download-file/:fileId",
+  async (req, res, next) => {
+    try {
+      const file = await prisma.file.findUnique({
+        where: {
+          id: req.params.fileId,
+          folderId: req.params.folderId,
+          ownerId: res.locals.user.id,
+        },
+      });
+
+      const { data, error } = await supabase.storage
+        .from(process.env.SUPABASE_BUCKET_NAME)
+        .download(file.url);
+
+      const arrayBuffer = await data.arrayBuffer();
+      const buffer = Buffer.from(arrayBuffer);
+
+      res.setHeader("Content-Type", file.mimetype);
+      res.setHeader(
+        "Content-Disposition",
+        `attachment; filename="${file.name}"`
+      );
+
+      res.send(buffer);
     } catch (error) {
       return next(error);
     }
