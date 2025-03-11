@@ -53,7 +53,10 @@
         </nav>
 
         <section class="my-files">
-          <h3><%= folder.name %></h3>
+          <h3>
+            <% if (files.length > 0) { %> <%= folder.name %> (<%= fileCount %>)
+            <% } else { %> <%= folder.name %> <% } %>
+          </h3>
 
           <% if (files.length > 0) { %>
           <div class="file-table">

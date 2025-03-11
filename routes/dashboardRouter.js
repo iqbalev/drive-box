@@ -11,7 +11,21 @@ const dashboardRouter = Router();
 // /dashboard Route
 dashboardRouter.get("/", async (req, res, next) => {
   try {
+    await prisma.file.count;
+
+    const folderCount = await prisma.folder.count({
+      where: {
+        ownerId: res.locals.user.id,
+      },
+    });
+
     const folders = await prisma.folder.findMany({
+      where: {
+        ownerId: res.locals.user.id,
+      },
+    });
+
+    const fileCount = await prisma.file.count({
       where: {
         ownerId: res.locals.user.id,
       },
@@ -26,7 +40,9 @@ dashboardRouter.get("/", async (req, res, next) => {
     const filesWithFormattedSize = formatFileSize(files);
 
     return res.render("dashboard", {
+      folderCount,
       folders,
+      fileCount,
       files: filesWithFormattedSize,
     });
   } catch (error) {
@@ -165,6 +181,13 @@ dashboardRouter.get("/folder/:folderId", async (req, res, next) => {
       },
     });
 
+    const fileCount = await prisma.file.count({
+      where: {
+        folderId: req.params.folderId,
+        ownerId: res.locals.user.id,
+      },
+    });
+
     const files = await prisma.file.findMany({
       where: {
         folderId: req.params.folderId,
@@ -176,6 +199,7 @@ dashboardRouter.get("/folder/:folderId", async (req, res, next) => {
 
     return res.render("dashboard/folder", {
       folder,
+      fileCount,
       files: filesWithFormattedSize,
     });
   } catch (error) {

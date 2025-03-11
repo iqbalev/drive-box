@@ -74,7 +74,10 @@
 
       <div class="dashboard-main">
         <section class="my-folders">
-          <h3>My Folders</h3>
+          <h3>
+            <% if (folders.length > 0) { %> My Folders (<%= folderCount %>) <% }
+            else { %> My Folders <% } %>
+          </h3>
 
           <% if (folders.length > 0) { %>
           <div class="folder-table">
@@ -140,7 +143,10 @@
         </section>
 
         <section class="my-files">
-          <h3>My Files</h3>
+          <h3>
+            <% if (files.length > 0) { %> My Files (<%= fileCount %>) <% } else
+            { %> My Files <% } %>
+          </h3>
 
           <% if (files.length > 0) { %>
           <div class="file-table">
