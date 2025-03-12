@@ -201,6 +201,7 @@
       document.querySelectorAll(".btn.close-modal").forEach((button) => {
         button.addEventListener("click", () => {
           button.closest("dialog").close();
+          button.closest("form").reset();
         });
       });
     </script>
