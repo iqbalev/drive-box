@@ -1,11 +1,5 @@
 /* Import */
 @import url("https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap");
 
 * {
   box-sizing: border-box;
@@ -13,32 +7,29 @@
   padding: 0;
 }
 
-/* Global */
 body {
   display: flex;
   flex-direction: column;
-  font-family: "DM Sans", "Source Sans 3", "Montserrat", "Inter", "Comfortaa",
-    "Raleway", "IBM Plex Mono", monospace;
   min-height: 100dvh;
+  font-family: "Comfortaa", sans-serif;
 }
 
 button,
-input {
+input,
+input[type="file"]::file-selector-button {
   font-family: inherit;
-  padding: 10px 20px;
   border-radius: 8px;
+  padding: 8px 16px;
 }
 
-button {
+button,
+input[type="file"]::file-selector-button {
   border: none;
-}
-
-button:hover {
   cursor: pointer;
 }
 
 input {
-  border: 1px solid rgb(128, 128, 128);
+  border: 1px solid #ddd;
 }
 
 a {
@@ -50,26 +41,37 @@ dialog[open] {
   position: fixed;
   inset: 50% auto auto 50%;
   transform: translate(-50%, -50%);
-  border: 1px solid;
+  border: none;
   border-radius: 8px;
   padding: 20px;
+  max-width: 300px;
+  width: 100%;
 }
 
-/* Header */
 header {
   display: flex;
   justify-content: center;
-  border-bottom: 1px solid;
+  border-bottom: 1px solid #ddd;
+  padding: 20px;
 }
 
-/* Auth */
-.auth-content {
+.auth-content,
+.dashboard-content,
+.folder-content {
   display: flex;
+}
+
+.auth-content {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100dvh;
+  min-height: 80dvh;
   gap: 20px;
+  padding: 20px;
+}
+
+.auth-content h2 {
+  text-align: center;
 }
 
 .auth-content span a {
@@ -80,195 +82,230 @@ header {
   text-decoration: underline;
 }
 
-.auth-form {
+.sidebar,
+.main {
   display: flex;
   flex-direction: column;
-  max-width: 400px;
-  width: 100%;
-  gap: 10px;
-}
-
-.auth-form ul {
-  display: flex;
-  flex-direction: column;
-}
-
-.auth-form li {
-  list-style: inside;
-}
-
-.auth-form .form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-/* Dashboard & Folder */
-.dashboard-content,
-.folder-content {
-  display: flex;
-}
-
-.dashboard-sidebar,
-.folder-sidebar {
-  display: flex;
-  flex-direction: column;
-  flex: 2;
+  padding: 20px;
   gap: 20px;
-  justify-content: center;
-  align-items: center;
+}
+
+.sidebar {
   height: 100dvh;
-  border-right: 1px solid;
+  border-right: 1px solid #ddd;
 }
 
-.dashboard-info,
-.folder-info {
+.main {
+  flex: 1;
+  min-width: 0;
+}
+
+.sidebar-header,
+.sidebar-body {
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
 
-.dashboard-actions,
-.folder-actions {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.dashboard-actions.top {
-  gap: 4px;
-}
-
-.new-folder-form,
-.new-file-form,
-.rename-folder-form {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.new-folder-form .form-group,
-.new-file-form .form-group,
-.rename-folder-form .form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.dashboard-main,
-.folder-main {
-  display: flex;
-  flex-direction: column;
-  flex: 8;
-  gap: 20px;
-}
-
-.my-folders,
-.my-files {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.folder-table,
-.file-table {
-  display: flex;
-  flex-direction: column;
-}
-
-.folder-header,
-.file-header {
+.sidebar-action {
   display: flex;
 }
 
-.folder-header span:first-child,
-.file-header span:first-child {
-  flex: 2;
-}
-
-.folder-header span:not(:first-child),
-.file-header span:not(:first-child) {
+.sidebar-action > button {
   flex: 1;
 }
 
-.folder-body,
-.file-body {
-  display: flex;
-  flex-direction: column;
+.sidebar-action > form {
+  width: 100%;
 }
 
-.folder-body li,
-.file-body li {
+.folders-wrapper,
+.files-wrapper {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.folder-navigation {
+  display: flex;
+}
+
+.navigation-lists {
+  display: flex;
+}
+
+.navigation-lists li {
   list-style: none;
-  border-top: 1px solid;
-  border-bottom: 1px solid;
-  margin-bottom: -1px;
-  flex-wrap: wrap;
-  gap: 4px;
 }
 
-.folder-body li:last-child,
-.file-body li:last-child {
-  margin-bottom: initial;
+.navigation-lists li > span {
+  padding: 0 8px;
 }
 
-.folder-body li:hover,
-.file-body li:hover {
-  background-color: #e9e9ed;
+.navigation-lists li:last-child {
+  font-weight: 600;
 }
 
-.folder-body a,
-.file-body span:first-child {
-  flex: 2;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.table {
+  display: flex;
+  flex-direction: column;
 }
 
-.folder-body span,
-.folder-body .body-actions,
-.file-body span:not(:first-child),
-.file-body .body-actions {
+.table-header {
+  display: flex;
+  align-items: center;
+  padding: 4px 0;
+}
+
+.table-header span {
+  font-weight: 600;
+}
+
+.table-header > span:first-child {
   flex: 1;
 }
 
-.body-actions {
-  display: flex;
-  gap: 4px;
-  align-items: center;
+.table-header > span:last-child {
+  text-align: right;
 }
 
-.body-actions a {
-  background-color: #e9e9ed;
+.table-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.table-rows {
+  display: flex;
+  border-bottom: 1px solid #ddd;
+  align-items: center;
+  padding: 4px 0;
+  gap: 4px;
+}
+
+.table-rows > a,
+.table-rows > span:first-child {
+  flex: 1;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.row-dropdown {
+  display: flex;
+  justify-content: flex-end;
+  position: relative;
+  cursor: pointer;
+}
+
+.row-actions.hide {
+  display: none;
+}
+
+.row-actions {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  z-index: 999;
+  top: 0;
+  right: 10px;
+  background-color: #e9e9e9;
   border-radius: 8px;
 }
 
-.body-actions > form > button,
-.body-actions > div > button {
-  padding: 0;
-  font-size: 1rem;
+.row-actions button {
+  width: 100%;
 }
 
-.body-actions a {
-  font-size: 1rem;
-}
-
-/* Folder */
-.folder-main ol {
+.details-wrapper {
   display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.folder-main ol li span {
-  padding: 0 4px;
+.details-wrapper > h3 {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
-.folder-main li {
-  list-style: none;
+.detail-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
-.folder-main a:first-child:hover {
-  text-decoration: underline;
+.detail {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.detail span:first-child {
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.form.auth {
+  max-width: 440px;
+  width: 100%;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.form-group.rename-folder label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.validation-errors {
+  display: flex;
+  flex-direction: column;
+}
+
+.validation-errors li {
+  list-style: inside;
+  font-size: 0.875rem;
+}
+
+@media screen and (max-width: 678px) {
+  .dashboard-content,
+  .folder-content {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    border-right: 0;
+    flex-direction: row;
+    justify-content: space-between;
+    height: initial;
+  }
+
+  .sidebar-body {
+    flex-direction: row;
+  }
+
+  .sidebar-action {
+    display: block;
+  }
+}
+
+@media screen and (max-width: 490px) {
+  .sidebar {
+    flex-direction: column;
+  }
+
+  .sidebar-body {
+    justify-content: flex-end;
+  }
 }

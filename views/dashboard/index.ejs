@@ -10,25 +10,24 @@
     <%- include("../partials/header.ejs") %>
 
     <main class="dashboard-content">
-      <aside class="dashboard-sidebar">
-        <section class="dashboard-info">
+      <aside class="sidebar dashboard">
+        <section class="sidebar-header">
           <h2>Dashboard</h2>
           <span>Hi, <%= user.username %>!</span>
         </section>
 
-        <section class="dashboard-actions top">
-          <div>
-            <button type="button" class="btn open-modal">New Folder</button>
+        <section class="sidebar-body">
+          <div class="sidebar-action">
             <dialog>
               <form
                 action="/dashboard/create-folder"
                 method="POST"
-                class="new-folder-form"
+                class="form new-folder"
               >
                 <h4>New Folder</h4>
 
                 <div class="form-group">
-                  <label for="new-folder">Folder Name</label>
+                  <label for="new-folder">Name</label>
                   <input
                     type="text"
                     name="newFolder"
@@ -37,102 +36,149 @@
                   />
                 </div>
 
-                <div class="form-group">
-                  <button type="submit">Create Folder</button>
+                <div class="form-group buttons">
+                  <button type="submit">Create</button>
                   <button type="button" class="btn close-modal">Cancel</button>
                 </div>
               </form>
             </dialog>
+
+            <button type="button" class="btn open-modal">New Folder</button>
           </div>
 
-          <div>
-            <button type="button" class="btn open-modal">New File</button>
+          <div class="sidebar-action">
             <dialog>
               <form
                 action="/dashboard/upload-file"
                 method="POST"
                 enctype="multipart/form-data"
-                class="new-file-form"
+                class="form new-file"
               >
                 <h4>New File</h4>
+
                 <input type="file" name="newFile" id="new-file" />
-                <div class="form-group">
-                  <button type="submit">Upload File</button>
+
+                <div class="form-group buttons">
+                  <button type="submit">Upload</button>
                   <button type="button" class="btn close-modal">Cancel</button>
                 </div>
               </form>
             </dialog>
-          </div>
-        </section>
 
-        <section class="dashboard-actions bottom">
-          <form action="/auth/sign-out" method="POST">
-            <button type="submit">Sign Out</button>
-          </form>
+            <button type="button" class="btn open-modal">New File</button>
+          </div>
+
+          <div class="sidebar-action">
+            <form action="/auth/sign-out" method="POST" class="form sign-out">
+              <button type="submit">Sign Out</button>
+            </form>
+          </div>
         </section>
       </aside>
 
-      <div class="dashboard-main">
-        <section class="my-folders">
+      <div class="main dashboard">
+        <section class="folders-wrapper">
           <h3>
-            <% if (folders.length > 0) { %> Folders (<%= folderCount %>) <% }
-            else { %> Folders <% } %>
+            <% if (folders.length > 0) { %> All Folders (<%= folderCount %>) <%
+            } else { %> All Folders <% } %>
           </h3>
 
           <% if (folders.length > 0) { %>
-          <div class="folder-table">
-            <div class="folder-header">
+          <div class="table">
+            <div class="table-header">
               <span>Name</span>
-              <span>Date Added</span>
-              <span>Last Edited</span>
-              <span>Actions</span>
+              <span>&vellip;</span>
             </div>
 
-            <ul class="folder-body">
+            <ul class="table-body">
               <% folders.forEach(({id, name, createdAt, editedAt}) => { %>
-              <li>
-                <a href="/dashboard/folder/<%= id %>"><%= name %></a>
-                <span><%= createdAt.toLocaleString("en-GB") %></span>
-                <span><%= editedAt.toLocaleString("en-GB") %></span>
-                <div class="body-actions">
-                  <form
-                    action="/dashboard/delete-folder/<%= id %>?_method=DELETE"
-                    method="POST"
-                  >
-                    <button type="submit">Delete</button>
-                  </form>
+              <li class="table-rows">
+                <a href="/dashboard/folder/<%= id %>" title="<%= name %>"
+                  ><%= name %></a
+                >
 
-                  <div>
-                    <button type="button" class="btn open-modal">Rename</button>
-                    <dialog>
-                      <form
-                        action="/dashboard/rename-folder/<%= id %>?_method=PUT"
-                        method="POST"
-                        class="rename-folder-form"
-                      >
-                        <h3><%= name %></h3>
+                <span class="row-dropdown"
+                  >&vellip;
 
-                        <div class="form-group rename-folder">
-                          <label>
-                            Folder Name
-                            <input
-                              type="text"
-                              name="renameFolder"
-                              placeholder="Meme Collections"
-                            />
-                          </label>
-                        </div>
+                  <div class="row-actions hide">
+                    <form
+                      action="/dashboard/delete-folder/<%= id %>?_method=DELETE"
+                      method="POST"
+                      class="form delete-folder"
+                    >
+                      <button type="submit">Delete</button>
+                    </form>
 
-                        <div class="form-group">
-                          <button type="submit">Rename Folder</button>
+                    <div class="action rename-folder">
+                      <dialog>
+                        <form
+                          action="/dashboard/rename-folder/<%= id %>?_method=PUT"
+                          method="POST"
+                          class="form rename-folder"
+                        >
+                          <h4>Rename Folder</h4>
+
+                          <div class="form-group rename-folder">
+                            <label>
+                              Name
+                              <input
+                                type="text"
+                                name="renameFolder"
+                                value="<%= name %>"
+                                placeholder="Meme Collections"
+                              />
+                            </label>
+                          </div>
+
+                          <div class="form-group buttons">
+                            <button type="submit">Rename</button>
+                            <button type="button" class="btn close-modal">
+                              Cancel
+                            </button>
+                          </div>
+                        </form>
+                      </dialog>
+
+                      <button type="button" class="btn open-modal">
+                        Rename
+                      </button>
+                    </div>
+
+                    <div class="action details">
+                      <dialog>
+                        <div class="details-wrapper">
+                          <h3 title="<%= name %>"><%= name %></h3>
+
+                          <div class="detail-group">
+                            <h4>Folder Details</h4>
+
+                            <div class="detail date-added">
+                              <span>Date Added</span>
+                              <span
+                                ><%= createdAt.toLocaleString("en-GB") %></span
+                              >
+                            </div>
+
+                            <div class="detail last-edited">
+                              <span>Last Edited</span>
+                              <span
+                                ><%= editedAt.toLocaleString("en-GB") %></span
+                              >
+                            </div>
+                          </div>
+
                           <button type="button" class="btn close-modal">
-                            Cancel
+                            Close
                           </button>
                         </div>
-                      </form>
-                    </dialog>
+                      </dialog>
+
+                      <button type="button" class="btn open-modal">
+                        Details
+                      </button>
+                    </div>
                   </div>
-                </div>
+                </span>
               </li>
               <% }) %>
             </ul>
@@ -143,42 +189,82 @@
           <% } %>
         </section>
 
-        <section class="my-files">
+        <section class="files-wrapper">
           <h3>
-            <% if (files.length > 0) { %> Files (<%= fileCount %>) <% } else {
-            %> Files <% } %>
+            <% if (files.length > 0) { %> All Files (<%= fileCount %>) <% } else
+            { %> All Files <% } %>
           </h3>
 
           <% if (files.length > 0) { %>
-          <div class="file-table">
-            <div class="file-header">
+          <div class="table">
+            <div class="table-header">
               <span>Name</span>
-              <span>Size</span>
-              <span>Date Added</span>
-              <span>Actions</span>
+              <span>&vellip;</span>
             </div>
 
-            <ul class="file-body">
-              <% files.forEach(({id, name, uploadedAt, size, url}) => { %>
-              <li>
+            <ul class="table-body">
+              <% files.forEach(({id, name, uploadedAt, size, mimetype}) => { %>
+              <li class="table-rows">
                 <span title="<%= name %>"><%= name %></span>
-                <span><%= size %></span>
-                <span><%= uploadedAt.toLocaleString("en-GB") %></span>
-                <div class="body-actions">
-                  <form
-                    action="/dashboard/delete-file/<%= id %>?_method=DELETE"
-                    method="POST"
-                  >
-                    <button type="submit">Delete</button>
-                  </form>
 
-                  <form
-                    action="/dashboard/download-file/<%= id %>"
-                    method="POST"
-                  >
-                    <button type="submit">Download</button>
-                  </form>
-                </div>
+                <span class="row-dropdown"
+                  >&vellip;
+
+                  <div class="row-actions hide">
+                    <form
+                      action="/dashboard/delete-file/<%= id %>?_method=DELETE"
+                      method="POST"
+                      class="form delete-file"
+                    >
+                      <button type="submit">Delete</button>
+                    </form>
+
+                    <form
+                      action="/dashboard/download-file/<%= id %>"
+                      method="POST"
+                      class="form download-file"
+                    >
+                      <button type="submit">Download</button>
+                    </form>
+
+                    <div class="action details">
+                      <dialog>
+                        <div class="details-wrapper">
+                          <h3 title="<%= name %>"><%= name %></h3>
+
+                          <div class="detail-group">
+                            <h4>File Details</h4>
+
+                            <div class="detail date-added">
+                              <span>Date Added</span>
+                              <span
+                                ><%= uploadedAt.toLocaleString("en-GB") %></span
+                              >
+                            </div>
+
+                            <div class="detail size">
+                              <span>Size</span>
+                              <span><%= size %></span>
+                            </div>
+
+                            <div class="detail mimetype">
+                              <span>File Type</span>
+                              <span><%= mimetype %></span>
+                            </div>
+                          </div>
+
+                          <button type="button" class="btn close-modal">
+                            Close
+                          </button>
+                        </div>
+                      </dialog>
+
+                      <button type="button" class="btn open-modal">
+                        Details
+                      </button>
+                    </div>
+                  </div>
+                </span>
               </li>
               <% }) %>
             </ul>
@@ -193,7 +279,8 @@
 
     <script>
       document.querySelectorAll(".btn.open-modal").forEach((button) => {
-        button.addEventListener("click", () => {
+        button.addEventListener("click", (e) => {
+          e.stopPropagation();
           button.closest("div").querySelector("dialog").showModal();
         });
       });
@@ -201,8 +288,39 @@
       document.querySelectorAll(".btn.close-modal").forEach((button) => {
         button.addEventListener("click", () => {
           button.closest("dialog").close();
-          button.closest("form").reset();
+          button.closest("form")?.reset();
+
+          document.querySelectorAll(".row-actions").forEach((action) => {
+            action.classList.add("hide");
+          });
         });
+      });
+
+      document.querySelectorAll(".row-dropdown").forEach((dropdown) => {
+        dropdown.addEventListener("click", (e) => {
+          e.stopPropagation();
+          document.querySelectorAll(".row-actions").forEach((action) => {
+            if (action !== dropdown.querySelector(".row-actions")) {
+              action.classList.add("hide");
+            }
+          });
+
+          dropdown.querySelector(".row-actions").classList.toggle("hide");
+        });
+      });
+
+      document.querySelectorAll(".row-actions").forEach((actions) => {
+        actions.addEventListener("click", (e) => {
+          e.stopPropagation();
+        });
+      });
+
+      document.addEventListener("click", (e) => {
+        if (!e.target.closest(".row-actions")) {
+          document.querySelectorAll(".row-actions").forEach((action) => {
+            action.classList.add("hide");
+          });
+        }
       });
     </script>
   </body>

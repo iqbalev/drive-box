@@ -3,91 +3,133 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>driveBox - Dashboard | <%= folder.name %></title>
+    <title>driveBox - Drive | <%= folder.name %></title>
     <link rel="stylesheet" href="/styles/global.css" />
   </head>
   <body>
     <%- include("../partials/header.ejs") %>
 
     <main class="folder-content">
-      <aside class="folder-sidebar">
-        <section class="folder-info">
-          <h2>My Drive</h2>
+      <aside class="sidebar folder">
+        <section class="sidebar-header">
+          <h2>Drive</h2>
           <span>Hi, <%= user.username %>!</span>
         </section>
 
-        <section class="folder-actions top">
-          <div>
-            <button type="button" class="btn open-modal">New File</button>
+        <section class="sidebar-body">
+          <div class="sidebar-action">
             <dialog>
               <form
                 action="/dashboard/folder/<%= folder.id %>/upload-file"
                 method="POST"
                 enctype="multipart/form-data"
-                class="new-file-form"
+                class="form new-file"
               >
                 <h4>New File</h4>
+
                 <input type="file" name="newFile" id="new-file" />
-                <div class="form-group">
-                  <button type="submit">Upload File</button>
+
+                <div class="form-group buttons">
+                  <button type="submit">Upload</button>
                   <button type="button" class="btn close-modal">Cancel</button>
                 </div>
               </form>
             </dialog>
-          </div>
-        </section>
 
-        <section class="folder-actions bottom">
-          <form action="/auth/sign-out" method="POST">
-            <button type="submit">Sign Out</button>
-          </form>
+            <button type="button" class="btn open-modal">New File</button>
+          </div>
+
+          <div class="sidebar-action">
+            <form action="/auth/sign-out" method="POST" class="form sign-out">
+              <button type="submit">Sign Out</button>
+            </form>
+          </div>
         </section>
       </aside>
 
-      <div class="folder-main">
-        <nav>
-          <ol>
+      <div class="main folder">
+        <nav class="folder-navigation">
+          <ol class="navigation-lists">
             <li><a href="/dashboard">Dashboard</a><span>&gt;</span></li>
-            <li>Folder (<%= folder.name %>)</li>
+            <li><%= folder.name %></li>
           </ol>
         </nav>
 
-        <section class="my-files">
+        <section class="files-wrapper">
           <h3>
             <% if (files.length > 0) { %> <%= folder.name %> (<%= fileCount %>)
             <% } else { %> <%= folder.name %> <% } %>
           </h3>
 
           <% if (files.length > 0) { %>
-          <div class="file-table">
-            <div class="file-header">
+          <div class="table">
+            <div class="table-header">
               <span>Name</span>
-              <span>Size</span>
-              <span>Date Added</span>
-              <span>Actions</span>
+              <span>&vellip;</span>
             </div>
 
-            <ul class="file-body">
-              <% files.forEach(({id, name, uploadedAt, size, url}) => { %>
-              <li>
+            <ul class="table-body">
+              <% files.forEach(({id, name, uploadedAt, size, mimetype}) => { %>
+              <li class="table-rows">
                 <span title="<%= name %>"><%= name %></span>
-                <span><%= size %></span>
-                <span><%= uploadedAt.toLocaleString("en-GB") %></span>
-                <div class="body-actions">
-                  <form
-                    action="/dashboard/folder/<%= folder.id %>/delete-file/<%= id %>?_method=DELETE"
-                    method="POST"
-                  >
-                    <button type="submit">Delete</button>
-                  </form>
 
-                  <form
-                    action="/dashboard/folder/<%= folder.id %>/download-file/<%= id %>"
-                    method="POST"
-                  >
-                    <button type="submit">Download</button>
-                  </form>
-                </div>
+                <span class="row-dropdown"
+                  >&vellip;
+
+                  <div class="row-actions hide">
+                    <form
+                      action="/dashboard/folder/<%= folder.id %>/delete-file/<%= id %>?_method=DELETE"
+                      method="POST"
+                      class="form delete-file"
+                    >
+                      <button type="submit">Delete</button>
+                    </form>
+
+                    <form
+                      action="/dashboard/folder/<%= folder.id %>/download-file/<%= id %>"
+                      method="POST"
+                      class="form download-file"
+                    >
+                      <button type="submit">Download</button>
+                    </form>
+
+                    <div class="action details">
+                      <dialog>
+                        <div class="details-wrapper">
+                          <h3 title="<%= name %>"><%= name %></h3>
+
+                          <div class="detail-group">
+                            <h4>File Details</h4>
+                            <div class="detail date-added">
+                              <span>Date Added</span>
+                              <span
+                                ><%= uploadedAt.toLocaleString("en-GB") %></span
+                              >
+                            </div>
+
+                            <div class="detail size">
+                              <span>Size</span>
+                              <span><%= size %></span>
+                            </div>
+
+                            <div class="detail mimetype">
+                              <span>File Type</span>
+                              <span><%= mimetype %></span>
+                            </div>
+                          </div>
+
+                          <button type="button" class="btn close-modal">
+                            Close
+                          </button>
+                        </div>
+                      </dialog>
+
+                      <button type="button" class="btn open-modal">
+                        Details
+                      </button>
+                    </div>
+                  </div>
+                </span>
               </li>
               <% }) %>
             </ul>
@@ -101,17 +143,50 @@
     </main>
 
     <script>
-      document
-        .querySelector(".btn.open-modal")
-        .addEventListener("click", () => {
-          document.querySelector("dialog").showModal();
+      document.querySelectorAll(".btn.open-modal").forEach((button) => {
+        button.addEventListener("click", (e) => {
+          e.stopPropagation();
+          button.closest("div").querySelector("dialog").showModal();
         });
+      });
 
-      document
-        .querySelector(".btn.close-modal")
-        .addEventListener("click", () => {
-          document.querySelector("dialog").close();
+      document.querySelectorAll(".btn.close-modal").forEach((button) => {
+        button.addEventListener("click", () => {
+          button.closest("dialog").close();
+          button.closest("form")?.reset();
+
+          document.querySelectorAll(".row-actions").forEach((action) => {
+            action.classList.add("hide");
+          });
         });
+      });
+
+      document.querySelectorAll(".row-dropdown").forEach((dropdown) => {
+        dropdown.addEventListener("click", (e) => {
+          e.stopPropagation();
+          document.querySelectorAll(".row-actions").forEach((action) => {
+            if (action !== dropdown.querySelector(".row-actions")) {
+              action.classList.add("hide");
+            }
+          });
+
+          dropdown.querySelector(".row-actions").classList.toggle("hide");
+        });
+      });
+
+      document.querySelectorAll(".row-actions").forEach((actions) => {
+        actions.addEventListener("click", (e) => {
+          e.stopPropagation();
+        });
+      });
+
+      document.addEventListener("click", (e) => {
+        if (!e.target.closest(".row-actions")) {
+          document.querySelectorAll(".row-actions").forEach((action) => {
+            action.classList.add("hide");
+          });
+        }
+      });
     </script>
   </body>
 </html>
